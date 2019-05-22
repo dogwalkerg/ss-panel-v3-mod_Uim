@@ -107,3 +107,32 @@ Wiki已经启用，欢迎为此面板维护wiki
 ## 免责声明
 
 本程序由 MIT License 授权。**不提供任何担保**。使用本程序即表明，您知情并同意：程序开发者不对此程序导致的任何服务中断、数据损失或任何少见未列出的事故负责。
+
+-  --------------- ==============-------------
+伪静态：
+
+
+location / { 
+    try_files $uri /index.php$is_args$args;
+}
+ location ~ .php {
+     try_files $uri =404;
+     fastcgi_split_path_info ^(.+.php)(/.+)$;
+	 include fastcgi_params; 
+	 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; 
+	 fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+	 fastcgi_index index.php; 
+	 fastcgi_pass 127.0.0.1:9000; 
+	 # Or use php-cgi pass as you wish 
+	 # fastcgi_pass unix:/tmp/php-cgi.sock;
+}
+
+
+
+
+----------------======================------------------------
+
+
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
